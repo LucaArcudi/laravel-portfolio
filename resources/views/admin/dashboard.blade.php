@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('admin.layouts.admin')
+
+@section('title', config('app.name', 'Laravel').' '.'- dashboard')
 
 @section('content')
 <div class="container">
