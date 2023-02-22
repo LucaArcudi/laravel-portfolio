@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', config('app.name', 'Laravel').' '.'- dashboard')
+@section('title', config('app.name').' - Dashboard')
 
 @section('content')
 <div class="container">
@@ -23,7 +23,10 @@
                 </div>
             </div>
 
-            <div class="list-group ">
+            <div class="list-group">
+                <a href="{{ route('admin.projects.index') }}" class="list-group-item list-group-item-action active disabled" aria-current="true">
+                    Resources links
+                </a>
                 <a href="{{ route('admin.projects.index') }}" class="list-group-item list-group-item-action" aria-current="true">
                     Projects index
                 </a>

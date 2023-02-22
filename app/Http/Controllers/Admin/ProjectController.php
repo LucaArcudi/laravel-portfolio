@@ -26,7 +26,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $project = new Project();
+        return view('admin.projects.create', compact('project'));
     }
 
     /**
@@ -37,29 +38,35 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $newProject = new Project();
+        $newProject->fill($data);
+        $newProject->save();
+
+        return redirect()->route('admin.projects.show', $newProject->id)->with('message', "$newProject->title has been created")->with('alert-type', 'primary');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -71,7 +78,12 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $updatedProject = Project::findOrFail($id);
+        $updatedProject->update($data);
+
+        return redirect()->route('admin.projects.show', $updatedProject->id)->with('message', "Successfully modified")->with('alert-type', 'success');
     }
 
     /**
