@@ -9,7 +9,7 @@
     </h2>
     <div class="row justify-content-center">
         <div class="col">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">{{ __('User Dashboard') }}</div>
 
                 <div class="card-body">
@@ -21,6 +21,12 @@
 
                     {{ __('You are logged in!') }}
                 </div>
+            </div>
+
+            <div class="list-group ">
+                <a href="{{ route('admin.projects.index') }}" class="list-group-item list-group-item-action" aria-current="true">
+                    Projects index
+                </a>
             </div>
         </div>
     </div>
