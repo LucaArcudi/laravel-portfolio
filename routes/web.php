@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\DashboardController as DashboardController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('guest.welcome');
 });
 
 // Route::get('/dashboard', function () {
