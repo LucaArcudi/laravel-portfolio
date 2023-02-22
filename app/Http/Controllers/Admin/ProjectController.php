@@ -5,9 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
+
+    public $validationRule = [
+        'title' => ['required', 'min:2', 'max:50', 'unique:projects'],
+        'technologies' => ['required', 'min:2', 'max:50'],
+        'description' => ['required', 'min:5'],
+        'date' => ['required']
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +48,8 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate($this->validationRule);
+        $data['slug'] = Str::slug($data['title']);
 
         $newProject = new Project();
         $newProject->fill($data);
@@ -78,7 +89,9 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
+        $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($id)];
+        $data = $request->validate($this->validationRule);
+        $data['slug'] = Str::slug($data['title']);
 
         $updatedProject = Project::findOrFail($id);
         $updatedProject->update($data);
