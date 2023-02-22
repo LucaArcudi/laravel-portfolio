@@ -18,7 +18,7 @@
             
         </div>
         <div class="col-12">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover text-center">
                 <thead class="align-middle">
                     <tr>
                         <th scope="col">id</th>
@@ -40,11 +40,11 @@
                         <td>
                             <a href="{{ route('admin.projects.show', $project->id ) }}" class="btn btn-primary btn-sm w-100">Show</a>
                             <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-warning btn-sm w-100">Edit</a>
-                            {{-- <form class="form-deleter" action="{{ route('admin.projects.destroy', $projects->id) }}" method="POST" data-element-name="{{ $projects->title }}">
+                            <form class="form-deleter" action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" data-element-name="{{ $project->title }}">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-danger btn-sm w-100">Delete</button>
-                            </form> --}}
+                            </form>
                         </td>
                     </tr>
                     @endforeach

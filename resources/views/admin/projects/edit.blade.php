@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', config('app.name')."Edit $project->title")
+@section('title', config('app.name')." - Edit $project->title")
 
 @section('content')
 <div class="container">
