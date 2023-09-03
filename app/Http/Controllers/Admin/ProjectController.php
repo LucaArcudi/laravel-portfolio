@@ -18,6 +18,10 @@ class ProjectController extends Controller
         'date' => ['required']
     ];
 
+    ////////////////////////////////////////////////////////////////////////////////////
+    ////// CRUD METHODS START ////// CRUD METHODS START ////// CRUD METHODS START //////
+    ////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Display a listing of the resource.
      *
@@ -108,4 +112,44 @@ class ProjectController extends Controller
         $project->delete();
         return redirect()->route('admin.projects.index')->with('message', "$project->title has been deleted")->with('alert-type', 'danger');
     }
+
+    //////////////////////////////////////////////////////////////////////////////
+    ////// CRUD METHODS END ////// CRUD METHODS END ////// CRUD METHODS END //////
+    //////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////// PREV & NEXT METHODS START ////// PREV & NEXT METHODS START ////// PREV & NEXT METHODS START //////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * go to the previous project
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getPrevProject(Project $project)
+    {
+        $prevProject = Project::where('id', '<' ,$project->id)->orderBy('id', 'desc')->first();
+        if (!is_null($prevProject)) {
+            return redirect()->route('admin.projects.show', $prevProject);
+        }
+        return redirect()->route('admin.projects.show', $project);
+    }
+
+    /**
+     * go to the next project
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getNextProject(Project $project)
+    {
+        $nextProject = Project::where('id', '>' ,$project->id)->first();
+        if (!is_null($nextProject)) {
+            return redirect()->route('admin.projects.show', $nextProject);
+        }
+        return redirect()->route('admin.projects.show', $project);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ////// PREV & NEXT METHODS END ////// PREV & NEXT METHODS END ////// PREV & NEXT METHODS END //////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
 }

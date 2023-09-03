@@ -37,13 +37,13 @@
                         <td>{{ $project->title }}</td>
                         <td>{{ $project->technologies }}</td>
                         <td>{{ $project->date }}</td>
-                        <td>
-                            <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-primary btn-sm w-100">Show</a>
-                            <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning btn-sm w-100">Edit</a>
+                        <td class="d-flex justify-content-around">
+                            <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>
                             <form class="form-deleter" action="{{ route('admin.projects.destroy', $project) }}" method="POST" data-element-name="{{ $project->title }}">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-danger btn-sm w-100">Delete</button>
+                                <button class="btn btn-danger">Delete</button>
                             </form>
                         </td>
                     </tr>
