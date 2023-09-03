@@ -11,4 +11,9 @@ class Project extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = array('title', 'description', 'technologies', 'date', 'slug');
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

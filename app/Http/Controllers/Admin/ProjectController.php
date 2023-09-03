@@ -25,7 +25,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
+        $projects = Project::paginate(10);
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -51,11 +51,11 @@ class ProjectController extends Controller
         $data = $request->validate($this->validationRule);
         $data['slug'] = Str::slug($data['title']);
 
-        $newProject = new Project();
-        $newProject->fill($data);
-        $newProject->save();
+        $project = new Project();
+        $project->fill($data);
+        $project->save();
 
-        return redirect()->route('admin.projects.show', $newProject->id)->with('message', "$newProject->title has been created")->with('alert-type', 'primary');
+        return redirect()->route('admin.projects.show', $project)->with('message', "$project->title has been created")->with('alert-type', 'primary');
     }
 
     /**
@@ -84,30 +84,27 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($id)];
+        $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
         $data = $request->validate($this->validationRule);
         $data['slug'] = Str::slug($data['title']);
+        $project->update($data);
 
-        $updatedProject = Project::findOrFail($id);
-        $updatedProject->update($data);
-
-        return redirect()->route('admin.projects.show', $updatedProject->id)->with('message', "Successfully modified")->with('alert-type', 'success');
+        return redirect()->route('admin.projects.show', $project->id)->with('message', "Successfully modified")->with('alert-type', 'success');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        $project = Project::findOrFail($id);
         $project->delete();
         return redirect()->route('admin.projects.index')->with('message', "$project->title has been deleted")->with('alert-type', 'danger');
     }

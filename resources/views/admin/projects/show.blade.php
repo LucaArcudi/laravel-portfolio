@@ -16,8 +16,8 @@
                 <p class="card-text">{{ $project->description }}</p>
                 <p class="card-text">{{ $project->date }}</p>
                 <a href="{{ route('admin.projects.index') }}" class="btn btn-primary">Index</a>
-                <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-warning">Edit</a>
-                <form class="form-deleter d-inline" action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" data-element-name="{{ $project->title }}">
+                <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>
+                <form class="form-deleter d-inline" action="{{ route('admin.projects.destroy', $project) }}" method="POST" data-element-name="{{ $project->title }}">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-danger">Delete</button>
