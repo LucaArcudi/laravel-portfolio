@@ -17,7 +17,7 @@ class ProjectController extends Controller
         'technologies' => ['required', 'min:2', 'max:50'],
         'description' => ['required', 'min:5'],
         'date' => ['required'],
-        'image' => ['required','image'],
+        'image' => ['image', 'required'],
     ];
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -98,8 +98,10 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
+        $this->validationRule['image'] = ['image'];
         $data = $request->validate($this->validationRule);
         $data['slug'] = Str::slug($data['title']);
+
         if ($request->hasFile('image')) {
             if (!$project->isImageAValidUrl()) {
                 Storage::delete($project->image);
