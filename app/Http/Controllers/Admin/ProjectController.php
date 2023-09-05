@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -15,7 +16,8 @@ class ProjectController extends Controller
         'title' => ['required', 'min:2', 'max:50', 'unique:projects'],
         'technologies' => ['required', 'min:2', 'max:50'],
         'description' => ['required', 'min:5'],
-        'date' => ['required']
+        'date' => ['required'],
+        'image' => ['required','image'],
     ];
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +31,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(10);
+        $projects = Project::paginate(5);
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -54,7 +56,7 @@ class ProjectController extends Controller
     {
         $data = $request->validate($this->validationRule);
         $data['slug'] = Str::slug($data['title']);
-
+        $data['image'] = Storage::put('imgs', $data['image']);
         $project = new Project();
         $project->fill($data);
         $project->save();
@@ -96,9 +98,16 @@ class ProjectController extends Controller
         $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
         $data = $request->validate($this->validationRule);
         $data['slug'] = Str::slug($data['title']);
+        if ($request->hasFile('image')) {
+            if (!$project->isImageAValidUrl()) {
+                Storage::delete($project->image);
+            }
+            $data['image'] = Storage::put('imgs', $data['image']);
+        }
+
         $project->update($data);
 
-        return redirect()->route('admin.projects.show', $project->id)->with('message', "Successfully modified")->with('alert-type', 'success');
+        return redirect()->route('admin.projects.show', $project)->with('message', "Successfully modified")->with('alert-type', 'success');
     }
 
     /**
@@ -109,6 +118,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if (!$project->isImageAValidUrl()) {
+            Storage::delete($project->image);
+        }
         $project->delete();
         return redirect()->route('admin.projects.index')->with('message', "$project->title has been deleted")->with('alert-type', 'danger');
     }

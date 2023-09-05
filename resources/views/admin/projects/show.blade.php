@@ -14,6 +14,11 @@
             </div>
             <div class="card-body">
                 <h6 class="card-subtitle">{{ $project->technologies }}</h6>
+                @if ($project->isImageAValidUrl())
+                    <img src="{{ $project->image }}" alt="{{ $project->title }} image" class="img-fluid w-25">
+                @else
+                    <img src="{{ asset('storage/'.$project->image) }}" alt="{{ $project->title }} image" class="img-fluid w-25">
+                @endif
                 <p class="card-text">{{ $project->description }}</p>
                 <p class="card-text">{{ $project->date }}</p>
             </div>
