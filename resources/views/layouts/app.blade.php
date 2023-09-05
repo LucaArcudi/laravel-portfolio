@@ -27,7 +27,7 @@
 
         @include('layouts.partials.header')
 
-        <main class="">
+        <main>
             @yield('content')
         </main>
     </div>

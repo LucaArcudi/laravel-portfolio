@@ -23,7 +23,12 @@
                 <p class="card-text">{{ $project->date }}</p>
             </div>
             <div class="card-footer d-flex justify-content-around">
-                <a href="{{ route('admin.projects.prev', $project) }}" class="btn btn-success">< Previous</a>
+                @if (!is_null($prevProject))
+                    <a href="{{ route('admin.projects.show', $prevProject) }}" class="btn btn-success">< Previous</a>
+                @else
+                    <a href="" class="btn btn-success disabled">< Previous</a>
+                @endif
+                
                 <div class="crud-buttons">
                     <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>
                     <form class="form-deleter d-inline" action="{{ route('admin.projects.destroy', $project) }}" method="POST" data-element-name="{{ $project->title }}">
@@ -32,7 +37,11 @@
                         <button class="btn btn-danger">Delete</button>
                     </form>
                 </div>
-                <a href="{{ route('admin.projects.next', $project) }}" class="btn btn-success">Next ></a>
+                @if (!is_null($nextProject))
+                    <a href="{{ route('admin.projects.show', $nextProject) }}" class="btn btn-success">Next ></a>
+                @else
+                    <a href="" class="btn btn-success disabled">Next ></a>
+                @endif
             </div>
         </div> 
     </div>

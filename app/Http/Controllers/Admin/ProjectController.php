@@ -72,7 +72,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('admin.projects.show', compact('project'));
+        $prevProject = Project::where('id', '<' ,$project->id)->orderBy('id', 'desc')->first();
+        $nextProject = Project::where('id', '>' ,$project->id)->first();
+        return view('admin.projects.show', compact('project', 'nextProject', 'prevProject'));
     }
 
     /**
@@ -128,40 +130,4 @@ class ProjectController extends Controller
     //////////////////////////////////////////////////////////////////////////////
     ////// CRUD METHODS END ////// CRUD METHODS END ////// CRUD METHODS END //////
     //////////////////////////////////////////////////////////////////////////////
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////// PREV & NEXT METHODS START ////// PREV & NEXT METHODS START ////// PREV & NEXT METHODS START //////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * go to the previous project
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getPrevProject(Project $project)
-    {
-        $prevProject = Project::where('id', '<' ,$project->id)->orderBy('id', 'desc')->first();
-        if (!is_null($prevProject)) {
-            return redirect()->route('admin.projects.show', $prevProject);
-        }
-        return redirect()->route('admin.projects.show', $project);
-    }
-
-    /**
-     * go to the next project
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getNextProject(Project $project)
-    {
-        $nextProject = Project::where('id', '>' ,$project->id)->first();
-        if (!is_null($nextProject)) {
-            return redirect()->route('admin.projects.show', $nextProject);
-        }
-        return redirect()->route('admin.projects.show', $project);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    ////// PREV & NEXT METHODS END ////// PREV & NEXT METHODS END ////// PREV & NEXT METHODS END //////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
 }
