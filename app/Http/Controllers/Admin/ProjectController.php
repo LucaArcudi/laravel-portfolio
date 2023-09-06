@@ -13,11 +13,22 @@ class ProjectController extends Controller
 {
 
     public $validationRule = [
-        'title' => ['required', 'min:2', 'max:50', 'unique:projects'],
-        'technologies' => ['required', 'min:2', 'max:50'],
-        'description' => ['required', 'min:5'],
-        'date' => ['required'],
+        'title' => ['required', 'min:3', 'max:255', 'unique:projects'],
+        'description' => ['required', 'min:5', 'max:1000'],
         'image' => ['image', 'required'],
+    ];
+
+    public $errorMessages = [
+        'title.required' => 'Il titolo è necessario',
+        'title.min' => 'Il titolo deve essere lungo almeno 3 caratteri',
+        'title.max' => 'il titolo deve essere lungo massimo 255 caratteri',
+        'title.unique' => 'Esiste un altro progetto con lo stesso titolo',
+        'description.required' => 'La descrizione è obbligatoria',
+        'description.min' => 'La descrizione deve essere lunga almeno 5 caratteri',
+        'description.max' => 'La descrizione deve essere lunga massino 1000 caratteri',
+        'image.required' => 'L\'immagine è obbligatoria',
+        'image.image' => 'L\'immagine deve essere un\'immagina valida',
+
     ];
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +65,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate($this->validationRule);
+        $data = $request->validate($this->validationRule, $this->errorMessages);
         $data['slug'] = Str::slug($data['title']);
         $data['image'] = Storage::put('imgs', $data['image']);
         $project = new Project();
@@ -99,7 +110,7 @@ class ProjectController extends Controller
     {
         $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
         $this->validationRule['image'] = ['image'];
-        $data = $request->validate($this->validationRule);
+        $data = $request->validate($this->validationRule, $this->errorMessages);
         $data['slug'] = Str::slug($data['title']);
 
         if ($request->hasFile('image')) {

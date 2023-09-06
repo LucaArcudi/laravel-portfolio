@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    @foreach ($projects as $project)
+    @forelse ($projects as $project)
         <div class="row text-center mb-5">
             <div class="card col">
                 <div class="card-body">
@@ -20,7 +20,11 @@
                 </div>
             </div> 
         </div>
-    @endforeach    
+    @empty
+        <p>
+            Non ci sono progetti da mostrare, <a href="{{ route('login') }}">accedi per aggiungere un nuovo progetto</a> o <a href="{{ route('register') }}">registrati</a>
+        </p>
+    @endforelse    
     {{ $projects->links() }}    
 </div>
 @endsection
