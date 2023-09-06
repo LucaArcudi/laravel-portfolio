@@ -143,4 +143,10 @@ class ProjectController extends Controller
     //////////////////////////////////////////////////////////////////////////////
     ////// CRUD METHODS END ////// CRUD METHODS END ////// CRUD METHODS END //////
     //////////////////////////////////////////////////////////////////////////////
+
+    public function trashIndex() 
+    {
+        $projects = Project::onlyTrashed()->get();
+        return view('admin.projects.trash', compact('projects'));
+    }
 }

@@ -21,6 +21,7 @@ Route::get('/', [GuestProjectController::class, 'index']);
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/projects/trash', [AdminProjectController::class, 'trashIndex'])->name('projects.trash');
     Route::resource('/projects', AdminProjectController::class);
 });
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Project extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     protected $fillable = array('title', 'description', 'slug', 'image');
 
     public function getRouteKeyName()
