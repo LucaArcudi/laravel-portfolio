@@ -43,7 +43,8 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::paginate(5);
-        return view('admin.projects.index', compact('projects'));
+        $trash = Project::onlyTrashed()->count();
+        return view('admin.projects.index', compact('projects', 'trash'));
     }
 
     /**
@@ -72,7 +73,7 @@ class ProjectController extends Controller
         $project->fill($data);
         $project->save();
 
-        return redirect()->route('admin.projects.show', $project)->with('message', "$project->title has been created")->with('alert-type', 'primary');
+        return redirect()->route('admin.projects.show', $project)->with('message', "Successfully created")->with('alert-type', 'success');
     }
 
     /**
@@ -137,16 +138,48 @@ class ProjectController extends Controller
             Storage::delete($project->image);
         }
         $project->delete();
-        return redirect()->route('admin.projects.index')->with('message', "$project->title has been deleted")->with('alert-type', 'danger');
+        return redirect()->route('admin.projects.index')->with('message', "Moved to bin")->with('alert-type', 'warning');
     }
 
     //////////////////////////////////////////////////////////////////////////////
     ////// CRUD METHODS END ////// CRUD METHODS END ////// CRUD METHODS END //////
     //////////////////////////////////////////////////////////////////////////////
 
-    public function trashIndex() 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ////// TRASH BIN METHODS START ////// TRASH BIN METHODS START ////// TRASH BIN METHODS START //////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function trash() 
     {
-        $projects = Project::onlyTrashed()->get();
+        $projects = Project::onlyTrashed()->paginate(5);
         return view('admin.projects.trash', compact('projects'));
     }
+
+    public function restore($id)
+    {   
+        Project::withTrashed()->where('id', $id)->restore();
+        if (Project::onlyTrashed()->count() > 0) {
+            return redirect()->back()->with('message', "Successfully restored")->with('alert-type', 'success');
+        }
+        return redirect()->route('admin.projects.index')->with('message', "Successfully restored")->with('alert-type', 'success');
+    }
+
+    public function forceDelete($id)
+    {
+        Project::withTrashed()->where('id', $id)->forceDelete();
+        if (Project::onlyTrashed()->count() > 0) {
+            return redirect()->back()->with('message', "Permanently removed")->with('alert-type', 'danger');
+        }
+        return redirect()->route('admin.projects.index')->with('message', "Permanently removed")->with('alert-type', 'danger');
+    }
+
+    public function restoreAll ()
+    {
+        Project::onlyTrashed()->restore();
+        return redirect()->route('admin.projects.index')->with('message', "All projects successfully restored")->with('alert-type', 'success');;
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    ////// TRASH BIN METHODS END ////// TRASH BIN METHODS END ////// TRASH BIN METHODS END //////
+    /////////////////////////////////////////////////////////////////////////////////////////////
 }

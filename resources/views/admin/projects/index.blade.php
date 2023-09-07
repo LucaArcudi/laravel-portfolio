@@ -20,8 +20,10 @@
                         <th scope="col">ID</th>
                         <th scope="col">Titolo</th>
                         <th scope="col" class="d-flex justify-content-between">
-                            <a href="{{ route('admin.projects.trash') }}" class="btn btn-primary">Vai al cestino</a>
                             <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">Aggiungi un nuovo progetto</a>
+                            @if ($trash)
+                            <a href="{{ route('admin.projects.trash') }}" class="btn btn-primary">Vai al cestino ({{ $trash }})</a>
+                            @endif
                         </th>
                     </tr>
                 </thead>
@@ -31,12 +33,12 @@
                         <th scope="row">{{ $project->id }}</th>
                         <td>{{ $project->title }}</td>
                         <td class="d-flex justify-content-between">
-                            <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-sm btn-primary" style="width: 33%">Show</a>
+                            <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-sm btn-info" style="width: 33%">Show</a>
                             <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-sm btn-warning" style="width: 33%">Edit</a>
                             <form class="form-deleter" action="{{ route('admin.projects.destroy', $project) }}" method="POST" data-element-name="{{ $project->title }}" style="width: 33%">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger w-100">Delete</button>
+                                <button class="btn btn-sm btn-danger w-100">Archive</button>
                             </form>
                         </td>
                     </tr>

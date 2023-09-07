@@ -20,8 +20,10 @@
                         <th scope="col">ID</th>
                         <th scope="col">Titolo</th>
                         <th scope="col" class="d-flex justify-content-between">
-                            <a href="{{ route('admin.projects.index') }}" class="btn btn-primary w-50">Index</a>
-                            <a href="" class="btn btn-primary w-50">Restore all</a>
+                            <form action="{{ route('admin.projects.restore-all') }}" method="POST" class="w-100">
+                                @csrf
+                                <button type="submit" class="btn btn-success w-100">Restore all</button>
+                            </form>
                         </th>
                     </tr>
                 </thead>
@@ -31,11 +33,15 @@
                         <th scope="row">{{ $project->id }}</th>
                         <td>{{ $project->title }}</td>
                         <td class="d-flex justify-content-between">
-                            <a href="" class="btn btn-sm btn-primary" style="width: 50%">Restore</a>
-                            <form class="form-deleter" action="" method="POST" data-element-name="{{ $project->title }}" style="width: 50%">
+                            <form action="{{ route('admin.projects.restore', $project->id) }}" method="POST" class="w-50">
+                                @csrf
+                                @method('POST')
+                                <button type="submit" class="btn btn-sm btn-success w-100">Restore</button>
+                            </form>
+                            <form action="{{ route('admin.projects.force-delete', $project->id) }}" method="POST" class="w-50">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger w-100">Delete perma</button>
+                                <button type="submit" class="btn btn-sm btn-danger w-100">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -48,6 +54,7 @@
                     @endforelse
                 </tbody>
             </table>
+            {{ $projects->links() }}
         </div>
     </div>
 </div>
