@@ -20,7 +20,8 @@
                 <thead class="align-middle">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Titolo</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Visibility</th>
                         <th scope="col" class="d-flex justify-content-between">
                             <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">Add a new project</a>
                             @if ($trash)
@@ -34,6 +35,7 @@
                     <tr>
                         <th scope="row">{{ $project->id }}</th>
                         <td>{{ $project->title }}</td>
+                        <td>{{ $project->is_visible }}</td>
                         <td class="d-flex justify-content-between">
                             <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-sm btn-info" style="width: 33%">Show</a>
                             <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-sm btn-warning" style="width: 33%">Edit</a>
