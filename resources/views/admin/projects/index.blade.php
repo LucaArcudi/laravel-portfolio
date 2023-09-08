@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', config('app.name').' - Projects')
-
+@section('deleteHandler')
+@vite(['resources/js/deleteHandler.js'])
+@endsection
 @section('content')
 <div class="container w-75">
     <div class="row">
@@ -20,9 +22,9 @@
                         <th scope="col">ID</th>
                         <th scope="col">Titolo</th>
                         <th scope="col" class="d-flex justify-content-between">
-                            <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">Aggiungi un nuovo progetto</a>
+                            <a href="{{ route('admin.projects.create') }}" class="btn btn-primary">Add a new project</a>
                             @if ($trash)
-                            <a href="{{ route('admin.projects.trash') }}" class="btn btn-primary">Vai al cestino ({{ $trash }})</a>
+                            <a href="{{ route('admin.projects.trash') }}" class="btn btn-primary">Trash ({{ $trash }})</a>
                             @endif
                         </th>
                     </tr>
@@ -35,7 +37,7 @@
                         <td class="d-flex justify-content-between">
                             <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-sm btn-info" style="width: 33%">Show</a>
                             <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-sm btn-warning" style="width: 33%">Edit</a>
-                            <form class="form-deleter" action="{{ route('admin.projects.destroy', $project) }}" method="POST" data-element-name="{{ $project->title }}" style="width: 33%">
+                            <form id="{{ $project->title }}" class="form-deleter" action="{{ route('admin.projects.destroy', $project) }}" method="POST" style="width: 33%">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger w-100">Archive</button>

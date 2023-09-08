@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', config('app.name').' - Trash')
-
+@section('deleteHandler')
+@vite(['resources/js/deleteHandler.js'])
+@endsection
 @section('content')
 <div class="container w-75">
     <div class="row">
@@ -18,7 +20,7 @@
                 <thead class="align-middle">
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Titolo</th>
+                        <th scope="col">Title</th>
                         <th scope="col" class="d-flex justify-content-between">
                             <form action="{{ route('admin.projects.restore-all') }}" method="POST" class="w-100">
                                 @csrf
@@ -38,7 +40,7 @@
                                 @method('POST')
                                 <button type="submit" class="btn btn-sm btn-success w-100">Restore</button>
                             </form>
-                            <form action="{{ route('admin.projects.force-delete', $project->id) }}" method="POST" class="w-50">
+                            <form id="{{ $project->title }}" class="form-deleter w-50" action="{{ route('admin.projects.force-delete', $project->id) }}" method="POST" >
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger w-100">Delete</button>
@@ -48,7 +50,7 @@
                     @empty
                     <tr>
                         <th colspan="5" class="text-start">
-                            Il cestino è vuoto
+                            The trash is empty
                         </th>
                     </tr>
                     @endforelse

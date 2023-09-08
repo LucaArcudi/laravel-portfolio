@@ -86,7 +86,8 @@ class ProjectController extends Controller
     {
         $prevProject = Project::where('id', '<' ,$project->id)->orderBy('id', 'desc')->first();
         $nextProject = Project::where('id', '>' ,$project->id)->first();
-        return view('admin.projects.show', compact('project', 'nextProject', 'prevProject'));
+        $trash = Project::onlyTrashed()->count();
+        return view('admin.projects.show', compact('project', 'nextProject', 'prevProject', 'trash'));
     }
 
     /**
