@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->boolean('is_visible')->after('description')->default(true);
+            $table->boolean('is_visible')->after('description')->default(false);
         });
     }
 

@@ -16,6 +16,7 @@ class ProjectController extends Controller
         'title' => ['required', 'min:3', 'max:255', 'unique:projects'],
         'description' => ['required', 'min:5', 'max:1000'],
         'image' => ['image', 'required'],
+        'is_visible' => ['boolean']
     ];
 
     public $errorMessages = [
@@ -120,6 +121,10 @@ class ProjectController extends Controller
                 Storage::delete($project->image);
             }
             $data['image'] = Storage::put('imgs', $data['image']);
+        }
+
+        if (!array_key_exists('is_visible', $data)) {
+            $data['is_visible'] = false;
         }
 
         $project->update($data);

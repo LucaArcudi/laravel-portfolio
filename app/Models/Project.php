@@ -10,7 +10,7 @@ class Project extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = array('title', 'description', 'slug', 'image');
+    protected $fillable = array('title', 'description', 'slug', 'image', 'is_visible');
 
     public function getRouteKeyName()
     {
