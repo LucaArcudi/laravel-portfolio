@@ -35,12 +35,12 @@
                         <th scope="row">{{ $project->id }}</th>
                         <td>{{ $project->title }}</td>
                         <td class="d-flex justify-content-between">
-                            <form action="{{ route('admin.projects.restore', $project->id) }}" method="POST" class="w-50">
+                            <form action="{{ route('admin.projects.restore', $project) }}" method="POST" class="w-50">
                                 @csrf
                                 @method('POST')
                                 <button type="submit" class="btn btn-sm btn-success w-100">Restore</button>
                             </form>
-                            <form id="{{ $project->title }}" class="form-deleter w-50" action="{{ route('admin.projects.force-delete', $project->id) }}" method="POST" >
+                            <form id="{{ $project->title }}" class="form-deleter w-50" action="{{ route('admin.projects.force-delete', $project) }}" method="POST" >
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger w-100">Delete</button>

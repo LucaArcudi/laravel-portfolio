@@ -11,16 +11,16 @@
         <div class="row">
             <div class="col-8 m-auto">
                 <div class="row align-items-end">
-                    <div class="col-8 p-0">
+                    <div class="col-12 p-0 text-end mb-3">
+                        @if ($trash)
+                            <a href="{{ route('admin.projects.trash') }}" class="btn btn-primary">Trash ({{ $trash }})</a>
+                        @endif
+                    </div>
+                    <div class="col-12 p-0">
                         @if (session('message'))
                         <div class="alert alert-{{ session('alert-type') }}">
                             {{ session('message') }}
                         </div>
-                        @endif
-                    </div>
-                    <div class="col-4 p-0 text-end mb-3">
-                        @if ($trash)
-                            <a href="{{ route('admin.projects.trash') }}" class="btn btn-primary">Trash ({{ $trash }})</a>
                         @endif
                     </div>
                 </div>

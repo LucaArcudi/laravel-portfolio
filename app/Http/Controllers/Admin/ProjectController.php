@@ -128,16 +128,13 @@ class ProjectController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Move the specified resource in the trash (soft deleting).
      *
      * @param  Project $project
      * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project)
-    {
-        if (!$project->isImageAValidUrl()) {
-            Storage::delete($project->image);
-        }
+    {   
         $project->delete();
         return redirect()->route('admin.projects.index')->with('message', "Moved to bin")->with('alert-type', 'warning');
     }
@@ -150,30 +147,58 @@ class ProjectController extends Controller
     ////// TRASH BIN METHODS START ////// TRASH BIN METHODS START ////// TRASH BIN METHODS START //////
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Display the resource's trash.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function trash() 
     {
         $projects = Project::onlyTrashed()->paginate(5);
         return view('admin.projects.trash', compact('projects'));
     }
 
-    public function restore($id)
+    /**
+     * Restore the specified project.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($slug)
     {   
-        Project::withTrashed()->where('id', $id)->restore();
+        Project::withTrashed()->where('slug', $slug)->restore();
         if (Project::onlyTrashed()->count() > 0) {
             return redirect()->back()->with('message', "Successfully restored")->with('alert-type', 'success');
         }
         return redirect()->route('admin.projects.index')->with('message', "Successfully restored")->with('alert-type', 'success');
     }
 
-    public function forceDelete($id)
+    /**
+     * Remove the specified project from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete($slug)
     {
-        Project::withTrashed()->where('id', $id)->forceDelete();
+        $projects = Project::withTrashed()->where('slug', $slug)->get();
+        foreach($projects as $project) {
+            if (!$project->isImageAValidUrl()) {
+                Storage::delete($project->image);
+            }
+            $project->forceDelete();
+        }
         if (Project::onlyTrashed()->count() > 0) {
             return redirect()->back()->with('message', "Permanently removed")->with('alert-type', 'danger');
         }
         return redirect()->route('admin.projects.index')->with('message', "Permanently removed")->with('alert-type', 'danger');
     }
 
+    /**
+     * Restore all the projects.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function restoreAll ()
     {
         Project::onlyTrashed()->restore();
