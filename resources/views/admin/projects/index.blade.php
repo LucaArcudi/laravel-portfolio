@@ -37,7 +37,15 @@
                     <tr>
                         <th scope="row">{{ $project->id }}</th>
                         <td>{{ $project->title }}</td>
-                        <td>{{ $project->is_visible }}</td>
+                        <td>
+                            <form action="{{ route('admin.projects.visibility-toggle', $project) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit">
+                                    {{ $project->is_visible }}
+                                </button>
+                            </form>
+                        </td>
                         <td class="d-flex justify-content-between">
                             <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-sm btn-info" style="width: 33%;">
                                 <i class="fa-solid fa-eye"></i>

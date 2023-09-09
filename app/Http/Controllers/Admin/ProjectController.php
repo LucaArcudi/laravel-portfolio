@@ -200,17 +200,24 @@ class ProjectController extends Controller
     }
 
     /**
-     * Restore all the projects.
+     * Restore all projects.
      *
      * @return \Illuminate\Http\Response
      */
     public function restoreAll ()
     {
         Project::onlyTrashed()->restore();
-        return redirect()->route('admin.projects.index')->with('message', "All projects successfully restored")->with('alert-type', 'success');;
+        return redirect()->route('admin.projects.index')->with('message', "All projects successfully restored")->with('alert-type', 'success');
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     ////// TRASH BIN METHODS END ////// TRASH BIN METHODS END ////// TRASH BIN METHODS END //////
     /////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function visibilityToggle(Project $project)
+    {
+        $project->is_visible = !$project->is_visible;
+        $project->save();
+        return redirect()->back();
+    } 
 }
