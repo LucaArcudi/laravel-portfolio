@@ -24,7 +24,7 @@
     </div>
     <div class="mb-3">
         <label class="form-label">Image</label>
-        <input type="file" class="form-control @error('image') is-invalid @enderror" {{ $htmlAttribute }} value="{{ old('image', $project->image) }}" name="image">
+        <input type="file" class="form-control @error('image') is-invalid @enderror" {{ $is_required }} value="{{ old('image', $project->image) }}" name="image">
         @error('image')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
