@@ -27,7 +27,7 @@
                                 New <i class="fa-solid fa-plus"></i>
                             </a>
                             @if ($trash)
-                            <a href="{{ route('admin.projects.trash') }}" class="btn btn-sm btn-primary">Trash ({{ $trash }})</a>
+                                <a href="{{ route('admin.projects.trash') }}" class="btn btn-sm btn-primary">Trash ({{ $trash }})</a>
                             @endif
                         </th>
                     </tr>
@@ -41,8 +41,12 @@
                             <form action="{{ route('admin.projects.visibility-toggle', $project) }}" method="POST">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit">
-                                    {{ $project->is_visible }}
+                                <button type="submit" class="btn">
+                                    @if ($project->is_visible)
+                                        <i class="fa-solid fa-toggle-on"></i>
+                                    @else
+                                        <i class="fa-solid fa-toggle-off"></i>
+                                    @endif
                                 </button>
                             </form>
                         </td>
@@ -56,6 +60,7 @@
                             <form id="{{ $project->title }}" class="form-deleter" action="{{ route('admin.projects.destroy', $project) }}" method="POST" style="width: 33%;">
                                 @csrf
                                 @method('DELETE')
+                                <input type="hidden" name="routeName" value="{{ $project->getRouteName() }}">
                                 <button class="btn btn-sm btn-danger w-100" style="width: 100%;">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>

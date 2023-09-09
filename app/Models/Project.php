@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Route;
 
 class Project extends Model
 {
@@ -19,5 +20,9 @@ class Project extends Model
 
     public function isImageAValidUrl(){
         return filter_var($this->image, FILTER_VALIDATE_URL);
+    }
+
+    public function getRouteName() {
+        return Route::currentRouteName();
     }
 }

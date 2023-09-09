@@ -40,25 +40,17 @@
                             <p class="card-text">{{ $project->date }}</p>
                         </div>
                         <div class="card-footer d-flex justify-content-around">
-                            @if (!is_null($prevProject))
-                                <a href="{{ route('admin.projects.show', $prevProject) }}" class="btn btn-success">< Previous</a>
-                            @else
-                                <a href="" class="btn btn-success disabled">< Previous</a>
-                            @endif
-                            
+                            <a href="{{ route('admin.projects.show', $prevProject) }}" class="btn btn-success">< Previous</a>
                             <div class="crud-buttons">
                                 <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>
                                 <form id="{{ $project->title }}" class="form-deleter d-inline" action="{{ route('admin.projects.destroy', $project) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
+                                    <input type="hidden" name="routeName" value="{{ $project->getRouteName() }}">
                                     <button class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
-                            @if (!is_null($nextProject))
-                                <a href="{{ route('admin.projects.show', $nextProject) }}" class="btn btn-success">Next ></a>
-                            @else
-                                <a href="" class="btn btn-success disabled">Next ></a>
-                            @endif
+                            <a href="{{ route('admin.projects.show', $nextProject) }}" class="btn btn-success">Next ></a>
                         </div>
                     </div> 
                 </div>

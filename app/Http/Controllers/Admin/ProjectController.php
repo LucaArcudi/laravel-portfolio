@@ -41,8 +41,8 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(Request $request)
+    {   
         $projects = Project::paginate(5);
         $trash = Project::onlyTrashed()->count();
         return view('admin.projects.index', compact('projects', 'trash'));
@@ -85,8 +85,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $prevProject = Project::where('id', '<' ,$project->id)->orderBy('id', 'desc')->first();
-        $nextProject = Project::where('id', '>' ,$project->id)->first();
+        $prevProject = Project::where('id', '<' ,$project->id)->orderBy('id', 'desc')->first() ?? Project::where('id', '>' ,$project->id)->orderBy('id', 'DESC')->first();
+        $nextProject = Project::where('id', '>' ,$project->id)->first() ?? Project::where('id', '<' ,$project->id)->first();
         $trash = Project::onlyTrashed()->count();
         return view('admin.projects.show', compact('project', 'nextProject', 'prevProject', 'trash'));
     }
@@ -138,10 +138,17 @@ class ProjectController extends Controller
      * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project, Request $request)
     {   
+        $data = $request->all();
         $project->delete();
-        return redirect()->route('admin.projects.index')->with('message', "Moved to bin")->with('alert-type', 'warning');
+        $data['routeName'];
+        if ($data['routeName'] === 'admin.projects.index') {
+            return redirect()->route('admin.projects.index')->with('message', "Moved to bin")->with('alert-type', 'warning');
+        } else {
+            $nextProject = Project::where('id', '>' ,$project->id)->first() ?? Project::where('id', '<' ,$project->id)->first();
+            return redirect()->route('admin.projects.show', $nextProject)->with('message', "$project->title has been moved to bin")->with('alert-type', 'warning');
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -218,6 +225,7 @@ class ProjectController extends Controller
     {
         $project->is_visible = !$project->is_visible;
         $project->save();
-        return redirect()->back();
+        $projectVisibility = $project->is_visible ? 'visible' : 'invisible';
+        return redirect()->back()->with('message', "$project->title is $projectVisibility")->with('alert-type', 'success');
     } 
 }

@@ -21,12 +21,12 @@ Route::get('/', [GuestProjectController::class, 'index']);
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::patch('/projects/{project}/visibility-toggle', [AdminProjectController::class, 'visibilityToggle'])->name('projects.visibility-toggle');
     Route::get('/projects/trash', [AdminProjectController::class, 'trash'])->name('projects.trash');
     Route::post('/projects/{project}/restore', [AdminProjectController::class, 'restore'])->name('projects.restore');
     Route::delete('/projects/{project}/force-delete', [AdminProjectController::class, 'forceDelete'])->name('projects.force-delete');
     Route::post('/projects/restore-all', [AdminProjectController::class, 'restoreAll'])->name('projects.restore-all');
     Route::resource('/projects', AdminProjectController::class);
-    Route::patch('/projects/{project}/visibility-toggle', [AdminProjectController::class, 'visibilityToggle'])->name('projects.visibility-toggle');
 });
 
 Route::middleware('auth')->group(function () {
