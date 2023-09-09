@@ -2,8 +2,9 @@
 
 @section('title', config('app.name').' - '.$project->title)
 
-@section('deleteHandler')
+@section('scripts')
     @vite(['resources/js/deleteHandler.js'])
+    @vite(['resources/js/popupHandler.js'])
 @endsection
 
 @section('content')
@@ -17,11 +18,7 @@
                         @endif
                     </div>
                     <div class="col-12 p-0">
-                        @if (session('message'))
-                        <div class="alert alert-{{ session('alert-type') }}">
-                            {{ session('message') }}
-                        </div>
-                        @endif
+                        @include('partials.popup')
                     </div>
                 </div>
                 <div class="row text-center">

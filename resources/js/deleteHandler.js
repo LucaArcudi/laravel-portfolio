@@ -1,13 +1,46 @@
+import Swal from 'sweetalert2';
+
 const forms = document.querySelectorAll('.form-deleter');
-forms.forEach(form => {
-    form.addEventListener('click', function(event) {
+forms.forEach((formDelete) => {
+    formDelete.addEventListener('submit', function (event) {
         event.preventDefault();
-        const projectTitle = form.getAttribute('id');
-        const currentUrl = window.location.href;
-        if (currentUrl === 'http://127.0.0.1:8000/admin/projects/trash') {
-            if (confirm(`${projectTitle} will be permanently removed, are you sure?`)) this.submit();
-        } else {
-            if (confirm(`Move ${projectTitle} to trash?`)) this.submit();
-        }
-    })
-})
+        var doubleconfirm = event.target.classList.contains('double-confirm');
+        Swal.fire({
+            title: 'Are you sure ?',
+            text: "Please confirm your request !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Yes, confirm !'
+        }).then((result) => {
+            if (result.value) {
+  
+                // if double confirm
+                if (doubleconfirm) {
+  
+                    Swal.fire({
+                        title: 'Confirm request',
+                        html: "Please type <b>CONFIRM</b>",
+                        input: 'text',
+                        type: 'warning',
+                        inputPlaceholder: 'CONFIRM',
+                        showCancelButton: true,
+                        confirmButtonText: 'Confirm',
+                        cancelButtonText: 'Cancel',
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: () => !Swal.isLoading(),
+                        preConfirm: (txt) => {
+                            return (txt.toUpperCase() == "CONFIRM");
+                        },
+                    }).then((result) => {
+                        if (result.value) this.submit();
+                    })
+                } else {
+                    this.submit();
+                }
+            }
+        });
+    });
+});

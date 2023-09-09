@@ -201,9 +201,9 @@ class ProjectController extends Controller
             $project->forceDelete();
         }
         if (Project::onlyTrashed()->count() > 0) {
-            return redirect()->back()->with('message', "Permanently removed")->with('alert-type', 'danger');
+            return redirect()->back()->with('message', "Permanently removed")->with('alert-type', 'error');
         }
-        return redirect()->route('admin.projects.index')->with('message', "Permanently removed")->with('alert-type', 'danger');
+        return redirect()->route('admin.projects.index')->with('message', "Permanently removed")->with('alert-type', 'error');
     }
 
     /**
