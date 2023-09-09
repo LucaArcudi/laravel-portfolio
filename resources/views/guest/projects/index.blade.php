@@ -14,17 +14,14 @@
                     @else
                         <img src="{{ asset('storage/'.$project->image) }}" alt="{{ $project->title }} image" class="img-fluid w-25">
                     @endif
-                    <h6 class="card-subtitle">{{ $project->technologies }}</h6>
                     <p class="card-text">{{ $project->description }}</p>
-                    <p class="card-text">{{ $project->date }}</p>
                 </div>
             </div> 
         </div>
     @empty
         <p>
-            Non ci sono progetti da mostrare, <a href="{{ route('login') }}">accedi per aggiungere un nuovo progetto</a> o <a href="{{ route('register') }}">registrati</a>
+            There are no projects to show, <a href="{{ route('login') }}" class="text-black">login</a> to add a new project or <a href="{{ route('register') }}" class="text-black">register.</a>
         </p>
-    @endforelse    
-    {{ $projects->links() }}    
+    @endforelse       
 </div>
 @endsection

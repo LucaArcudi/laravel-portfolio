@@ -34,5 +34,8 @@
         <input type="checkbox" value="1" @checked(old('is_visible', $project->is_visible))  name="is_visible">
     </div>
 
-    <button type="submit" class="btn btn-primary">{{ $buttonName }}</button>
+    <div class="buttons-wrapper d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">{{ $buttonName }}</button>
+        <a href="{{ route('admin.projects.index') }}" class="btn btn-primary">Projects</a>
+    </div>
 </form>

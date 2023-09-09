@@ -7,18 +7,20 @@
     @vite(['resources/js/popupHandler.js'])
 @endsection
 
+@include('partials.popup')
+
 @section('content')
-    <div class="container">
+<div class="container">
         <div class="row">
             <div class="col-8 m-auto">
                 <div class="row align-items-end">
-                    <div class="col-12 p-0 text-end mb-3">
+                    <div class="col p-0 text-start mb-3">
+                        <a href="{{ route('admin.projects.index') }}" class="btn btn-primary">Projects</a>
+                    </div>
+                    <div class="col p-0 text-end mb-3">
                         @if ($trash)
                             <a href="{{ route('admin.projects.trash') }}" class="btn btn-primary">Trash ({{ $trash }})</a>
                         @endif
-                    </div>
-                    <div class="col-12 p-0">
-                        @include('partials.popup')
                     </div>
                 </div>
                 <div class="row text-center">

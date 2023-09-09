@@ -17,7 +17,7 @@
                     <thead class="align-middle">
                         <tr>
                             <th scope="col" style="width: 1%;">ID</th>
-                            <th scope="col" style="width: 78%;">Title</th>
+                            <th scope="col" style="width: 75%;">Title</th>
                             <th scope="col" style="width: 1%;">Visibility</th>
                             <th scope="col" class="d-flex justify-content-between">
                                 <a href="{{ route('admin.projects.create') }}" class="btn btn-sm btn-primary">

@@ -7,17 +7,20 @@
     @vite(['resources/js/popupHandler.js'])
 @endsection
 
+@include('partials.popup')
+
 @section('content')
     <div class="container w-75">
         <div class="row">
-
-            @include('partials.popup')
             <div class="col-12">
+                <div class="col p-0 text-start mb-3">
+                    <a href="{{ route('admin.projects.index') }}" class="btn btn-primary">Projects</a>
+                </div>
                 <table class="table table-sm table-bordered">
                     <thead class="align-middle">
                         <tr>
                             <th scope="col" style="width: 1%;">ID</th>
-                            <th scope="col" style="width: 78%;">Title</th>
+                            <th scope="col" style="width: 75%;">Title</th>
                             <th scope="col" style="width: 1%;">Visibility</th>
                             <th scope="col" class="d-flex justify-content-between">
                                 <form action="{{ route('admin.projects.restore-all') }}" method="POST" class="w-100">
