@@ -11,7 +11,7 @@ class Project extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = array('title', 'description', 'slug', 'image', 'is_visible');
+    protected $fillable = array('title', 'description', 'slug', 'image', 'is_visible', 'category_id');
 
     public function getRouteKeyName()
     {
@@ -24,5 +24,9 @@ class Project extends Model
 
     public function getRouteName() {
         return Route::currentRouteName();
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class);
     }
 }
