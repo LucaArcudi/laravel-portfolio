@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -34,6 +35,7 @@ class CategorySeeder extends Seeder
             $newCategory = new Category();
             $newCategory->name = $category['name'];
             $newCategory->color = $category['color'];
+            $newCategory->slug = Str::slug($newCategory->name);
             $newCategory->save();
         }
     }

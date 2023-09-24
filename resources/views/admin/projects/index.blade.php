@@ -16,10 +16,11 @@
                 <table class="table table-sm table-bordered">
                     <thead class="align-middle">
                         <tr>
-                            <th scope="col" style="width: 1%;">ID</th>
-                            <th scope="col" style="width: 75%;">Title</th>
-                            <th scope="col" style="width: 75%;">Category</th>
-                            <th scope="col" style="width: 1%;">Visibility</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Skills</th>
+                            <th scope="col">Visibility</th>
                             <th scope="col" class="d-flex justify-content-between">
                                 <a href="{{ route('admin.projects.create') }}" class="btn btn-sm btn-primary">
                                     New <i class="fa-solid fa-plus"></i>
@@ -36,6 +37,11 @@
                             <th scope="row">{{ $project->id }}</th>
                             <td>{{ $project->title }}</td>
                             <td>{{ $project->category->name }}</td>
+                            <td>
+                                @foreach ( $project->skills as $skill )
+                                    <img style="width: 50px;" src="{{ $skill->image }}" alt="{{ $skill->name }} image">
+                                @endforeach
+                            </td>
                             <td>
                                 <form action="{{ route('admin.projects.visibility-toggle', $project) }}" method="POST">
                                     @csrf
