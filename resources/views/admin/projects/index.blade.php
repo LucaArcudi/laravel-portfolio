@@ -18,6 +18,7 @@
                         <tr>
                             <th scope="col" style="width: 1%;">ID</th>
                             <th scope="col" style="width: 75%;">Title</th>
+                            <th scope="col" style="width: 75%;">Category</th>
                             <th scope="col" style="width: 1%;">Visibility</th>
                             <th scope="col" class="d-flex justify-content-between">
                                 <a href="{{ route('admin.projects.create') }}" class="btn btn-sm btn-primary">
@@ -34,6 +35,7 @@
                         <tr>
                             <th scope="row">{{ $project->id }}</th>
                             <td>{{ $project->title }}</td>
+                            <td>{{ $project->category->name }}</td>
                             <td>
                                 <form action="{{ route('admin.projects.visibility-toggle', $project) }}" method="POST">
                                     @csrf

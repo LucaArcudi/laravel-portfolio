@@ -26,6 +26,7 @@
                 <div class="row text-center">
                     <div class="col-12 card g-0">
                         <div class="card-header">
+                            <h6 style="color: {{ $project->category->color }}">{{ $project->category->name }}</h6>
                             <h5 class="card-title">{{ $project->title }}</h5>
                         </div>
                         <div class="card-body">
