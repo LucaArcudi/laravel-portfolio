@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,22 +17,11 @@ class ProjectController extends Controller
         'title' => ['required', 'min:3', 'max:255', 'unique:projects'],
         'description' => ['required', 'min:5', 'max:1000'],
         'image' => ['image', 'required'],
-        'is_visible' => ['boolean']
+        'is_visible' => ['boolean'],
+        'category_id' => ['exists:categories,id']
     ];
 
-    public $errorMessages = [
-        'title.required' => 'Il titolo è necessario',
-        'title.min' => 'Il titolo deve essere lungo almeno 3 caratteri',
-        'title.max' => 'il titolo deve essere lungo massimo 255 caratteri',
-        'title.unique' => 'Esiste un altro progetto con lo stesso titolo',
-        'description.required' => 'La descrizione è obbligatoria',
-        'description.min' => 'La descrizione deve essere lunga almeno 5 caratteri',
-        'description.max' => 'La descrizione deve essere lunga massino 1000 caratteri',
-        'image.required' => 'L\'immagine è obbligatoria',
-        'image.image' => 'L\'immagine deve essere un\'immagina valida',
-
-    ];
-
+    
     ////////////////////////////////////////////////////////////////////////////////////
     ////// CRUD METHODS START ////// CRUD METHODS START ////// CRUD METHODS START //////
     ////////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +46,8 @@ class ProjectController extends Controller
     public function create()
     {
         $project = new Project();
-        return view('admin.projects.create', compact('project'));
+        $categories = Category::all();
+        return view('admin.projects.create', compact('project', 'categories'));
     }
 
     /**
@@ -67,7 +58,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate($this->validationRule, $this->errorMessages);
+        $data = $request->validate($this->validationRule);
         $data['slug'] = Str::slug($data['title']);
         $data['image'] = Storage::put('imgs', $data['image']);
         $project = new Project();
@@ -99,7 +90,8 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        $categories = Category::all();
+        return view('admin.projects.edit', compact('project', 'categories'));
     }
 
     /**
@@ -113,7 +105,7 @@ class ProjectController extends Controller
     {
         $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
         $this->validationRule['image'] = ['image'];
-        $data = $request->validate($this->validationRule, $this->errorMessages);
+        $data = $request->validate($this->validationRule);
         $data['slug'] = Str::slug($data['title']);
 
         if ($request->hasFile('image')) {
