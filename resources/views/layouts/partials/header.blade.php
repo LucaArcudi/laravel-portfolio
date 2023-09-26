@@ -21,6 +21,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('admin.projects.index') }}">{{ __('Projects') }}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.categories.index') }}">{{ __('Categories') }}</a>
+                    </li>
                 </ul>
 
                 <!-- Right Side Of Navbar -->

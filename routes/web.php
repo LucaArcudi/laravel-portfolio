@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as DashboardController;
@@ -21,6 +22,7 @@ Route::get('/', [GuestProjectController::class, 'index']);
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('/categories', CategoryController::class);
     Route::patch('/projects/{project}/visibility-toggle', [AdminProjectController::class, 'visibilityToggle'])->name('projects.visibility-toggle');
     Route::get('/projects/trash', [AdminProjectController::class, 'trash'])->name('projects.trash');
     Route::post('/projects/{project}/restore', [AdminProjectController::class, 'restore'])->name('projects.restore');
