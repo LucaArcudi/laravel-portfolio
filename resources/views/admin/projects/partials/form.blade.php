@@ -47,6 +47,5 @@
 
     <div class="buttons-wrapper d-flex justify-content-between">
         <button type="submit" class="btn btn-primary">{{ $buttonName }}</button>
-        <a href="{{ route('admin.projects.index') }}" class="btn btn-primary">Projects</a>
     </div>
 </form>
