@@ -78,7 +78,7 @@
                             <td class="d-flex justify-content-between">
                                 <form action="{{ route('admin.projects.clear-category', $project, $category->name) }}" method="POST">
                                     @csrf
-                                    @method('DELETE')
+                                    @method('PATCH')
                                     <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove from {{ $category->name }} category</button>
                                 </form>
                             </td>
