@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-3">
                         <div class="col-4">
-                            <img src="{{ Auth::user()->userDetail->user_image }}" alt="user-image" style="width: 100px">
+                            <img src="{{ Auth::user()->userDetail?->user_image }}" alt="user-image" style="width: 100px">
                         </div>
                         <div class="col-8">
                             <h2 class="m-0">{{Auth::user()->name}}</h2>
@@ -25,7 +25,7 @@
                     </div>
                     <div>
                         <p>
-                            <em>{{ Auth::user()->userDetail->bio }}</em>
+                            <em>{{ Auth::user()->userDetail?->bio }}</em>
                         </p>
                     </div>
                 </div>

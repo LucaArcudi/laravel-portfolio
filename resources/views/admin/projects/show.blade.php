@@ -26,10 +26,10 @@
                 <div class="row text-center">
                     <div class="col-12 card g-0">
                         <div class="card-header">
-                            <h6 style="color: {{ $project->category->color }}">{{ $project->category->name }}</h6>
+                            <h6 style="color: {{ $project->category->color ?? 'black' }}">{{ $project->category->name ?? 'Without category' }}</h6>
                             <h5 class="card-title">{{ $project->title }}</h5>
                             @foreach ( $project->skills as $skill )
-                                <img style="width: 50px;" src="{{ $skill->image }}" alt="">
+                                <img style="width: 50px;" src="{{ $skill->image }}" alt="{{ $skill->name }} image">
                             @endforeach
                         </div>
                         <div class="card-body">
@@ -42,7 +42,7 @@
                             <p class="card-text">{{ $project->description }}</p>
                             <p class="card-text">{{ $project->date }}</p>
                         </div>
-                        <div class="card-footer d-flex justify-content-around">
+                        <div class="card-footer d-flex justify-content-between">
                             <a href="{{ route('admin.projects.show', $prevProject) }}" class="btn btn-success">< Previous</a>
                             <div class="crud-buttons">
                                 <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>

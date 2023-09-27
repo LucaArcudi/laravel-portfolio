@@ -13,10 +13,12 @@
 
             @include('partials.popup')
             <div class="col-12">
-                <div class="row mb-3 justify-content-between align-items-center">
-                    <h1 class="mb-3 col-4">
-                        <b style="color: {{ $category->color }}">{{ $category->name }}</b>
-                    </h1>
+                <div class="row mb-3 justify-content-between align-items-end">
+                    <div class="col-4">
+                        <h1 class="mb-0">
+                            <b style="color: {{ $category->color }}">{{ $category->name }}</b>
+                        </h1>
+                    </div>
                     <div class="crud-buttons text-end col-4">
                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-warning">Edit</a>
                         <form id="{{ $category->name }}" class="form-deleter d-inline" action="{{ route('admin.categories.destroy', $category) }}" method="POST">
@@ -42,8 +44,9 @@
                     <thead class="align-middle">
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col" style="width: 60%">Title</th>
+                            <th scope="col" style="width: 55%">Title</th>
                             <th scope="col">Skills</th>
+                            <th scope="col">Visibility</th>
                             <th scope="col" class="d-flex justify-content-between">
                                 
                             </th>
@@ -59,16 +62,31 @@
                                     <img style="width: 50px;" src="{{ $skill->image }}" alt="{{ $skill->name }} image">
                                 @endforeach
                             </td>
+                            <td>
+                                <form action="{{ route('admin.projects.visibility-toggle', $project) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn">
+                                        @if ($project->is_visible)
+                                            <i class="fa-solid fa-toggle-on" title="visible"></i>
+                                        @else
+                                            <i class="fa-solid fa-toggle-off" title="invisible"></i>
+                                        @endif
+                                    </button>
+                                </form>
+                            </td>
                             <td class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-danger">
-                                    <i class="fa-solid fa-trash"></i> Remove from {{ $category->name }}
-                                </a>
+                                <form action="{{ route('admin.projects.clear-category', $project, $category->name) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove from {{ $category->name }} category</button>
+                                </form>
                             </td>
                         </tr>
                         @empty
                         <tr>
                             <th colspan="5" class="text-start">
-                                There are no projects in {{ $category->name }}
+                                There are no projects in {{ $category->name }} category
                             </th>
                         </tr>
                         @endforelse

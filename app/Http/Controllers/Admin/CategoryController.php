@@ -5,9 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
-{
+{   
+
+    protected $validationRules = [
+        'name' => ['required', 'unique:categories', 'min:3', 'max:25'],
+        'color' => ['required', 'max:25'],
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +44,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate($this->validationRules);
+        $data['slug'] = Str::slug($data['name'].'-'.rand());
+        $newCategory = new Category();
+        $newCategory->fill($data);
+        $newCategory->save();
+
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -85,6 +98,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->back();
+        return redirect()->route('admin.categories.index')->with('message', "$category->name has been permanently removed")->with('alert-type', 'warning');
     }
 }

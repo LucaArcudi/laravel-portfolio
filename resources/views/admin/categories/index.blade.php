@@ -19,6 +19,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">Name</th>
                             <th scope="col">Color</th>
+                            <th scope="col">N. of projects</th>
                             <th scope="col" class="d-flex justify-content-between">
                                 <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary">
                                     New <i class="fa-solid fa-plus"></i>
@@ -32,6 +33,7 @@
                             <th scope="row">{{ $category->id }}</th>
                             <td>{{ $category->name }}</td>
                             <td style="background-color: {{ $category->color }}">{{ $category->color }}</td>
+                            <td>{{ count($category->projects) }}</td>
                             <td class="d-flex justify-content-between">
                                 <a href="{{ route('admin.categories.show', $category ) }}" class="btn btn-sm btn-info" style="width: 33%;">
                                     <i class="fa-solid fa-eye"></i>

@@ -31,12 +31,14 @@ class CategorySeeder extends Seeder
             ]
         ];
 
-        foreach ($categories as $category) {
+        foreach ($categories as $key => $category) {
             $newCategory = new Category();
             $newCategory->name = $category['name'];
-            $newCategory->color = $category['color'];
             $newCategory->slug = Str::slug($newCategory->name);
+            $newCategory->color = $category['color'];
             $newCategory->save();
+            $newCategory->slug = $newCategory->slug.'-'.$newCategory->id;
+            $newCategory->update();
         }
     }
 }

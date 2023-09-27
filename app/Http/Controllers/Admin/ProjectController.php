@@ -13,12 +13,17 @@ use Illuminate\Validation\Rule;
 class ProjectController extends Controller
 {
 
-    public $validationRule = [
-        'title' => ['required', 'min:3', 'max:255', 'unique:projects'],
+    public $validationRules = [
+        'title' => [
+            'required',
+            'min:3',
+            'max:255',
+            'unique:projects',
+        ],
         'description' => ['required', 'min:5', 'max:1000'],
         'image' => ['image', 'required'],
         'is_visible' => ['boolean'],
-        'category_id' => ['exists:categories,id']
+        'category_id' => ['exists:categories,id', 'nullable']
     ];
 
     
@@ -57,13 +62,15 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $data = $request->validate($this->validationRule);
+    {   
+        $data = $request->validate($this->validationRules);
         $data['slug'] = Str::slug($data['title']);
         $data['image'] = Storage::put('imgs', $data['image']);
         $project = new Project();
         $project->fill($data);
         $project->save();
+        $project->slug = $project->slug.'-'.$project->id;
+        $project->update();
 
         return redirect()->route('admin.projects.show', $project)->with('message', "Successfully created")->with('alert-type', 'success');
     }
@@ -103,10 +110,10 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $this->validationRule['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
-        $this->validationRule['image'] = ['image'];
-        $data = $request->validate($this->validationRule);
-        $data['slug'] = Str::slug($data['title']);
+        $this->validationRules['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
+        $this->validationRules['image'] = ['image'];
+        $data = $request->validate($this->validationRules);
+        $data['slug'] = Str::slug($data['title'].'-'.rand());
 
         if ($request->hasFile('image')) {
             if (!$project->isImageAValidUrl()) {
@@ -134,9 +141,9 @@ class ProjectController extends Controller
     {   
         $data = $request->all();
         $project->delete();
-        $data['routeName'];
+        // $data['routeName'];
         if ($data['routeName'] === 'admin.projects.index') {
-            return redirect()->route('admin.projects.index')->with('message', "Moved to bin")->with('alert-type', 'warning');
+            return redirect()->route('admin.projects.index')->with('message', "$project->title has been moved to bin")->with('alert-type', 'warning');
         } else {
             $nextProject = Project::where('id', '>' ,$project->id)->first() ?? Project::where('id', '<' ,$project->id)->first();
             return redirect()->route('admin.projects.show', $nextProject)->with('message', "$project->title has been moved to bin")->with('alert-type', 'warning');
@@ -219,5 +226,12 @@ class ProjectController extends Controller
         $project->save();
         $projectVisibility = $project->is_visible ? 'visible' : 'invisible';
         return redirect()->back()->with('message', "$project->title is $projectVisibility")->with('alert-type', 'success');
-    } 
+    }
+
+    public function clearCategory(Project $project) {
+        $categoryName = $project->category->name;
+        $project->category_id = null;
+        $project->update();
+        return redirect()->back()->with('message', "$project->title is no longer in $categoryName")->with('alert-type', 'success');
+    }
 }

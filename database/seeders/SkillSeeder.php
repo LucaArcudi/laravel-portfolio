@@ -25,6 +25,8 @@ class SkillSeeder extends Seeder
             $newSkill->slug = Str::slug($newSkill->name);
             $newSkill->image = $faker->imageUrl();
             $newSkill->save();
+            $newSkill->slug = $newSkill->slug.'-'.$newSkill->id;
+            $newSkill->update();
         }
     }
 }

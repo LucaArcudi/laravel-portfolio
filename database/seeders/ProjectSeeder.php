@@ -20,13 +20,15 @@ class ProjectSeeder extends Seeder
     public function run(Faker $faker)
     {
         for ($i = 0; $i < 20; $i++) {
-            $newProjects = new Project();
-            $newProjects->category_id = Category::inRandomOrder()->first()->id;
-            $newProjects->title = $faker->sentence(2);
-            $newProjects->slug = Str::slug($newProjects->title);
-            $newProjects->image = $faker->imageUrl();
-            $newProjects->description = $faker->text();
-            $newProjects->save();
+            $newProject = new Project();
+            $newProject->category_id = Category::inRandomOrder()->first()->id;
+            $newProject->title = $faker->sentence(2);
+            $newProject->slug = Str::slug($newProject->title);
+            $newProject->image = $faker->imageUrl();
+            $newProject->description = $faker->text();
+            $newProject->save();
+            $newProject->slug = $newProject->slug.'-'.$newProject->id;
+            $newProject->update();
         }
     }
 }
