@@ -113,7 +113,7 @@ class ProjectController extends Controller
         $this->validationRules['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
         $this->validationRules['image'] = ['image'];
         $data = $request->validate($this->validationRules);
-        $data['slug'] = Str::slug($data['title'].'-'.rand());
+        $data['slug'] = Str::slug($data['title'].'-'.$project->id);
 
         if ($request->hasFile('image')) {
             if (!$project->isImageAValidUrl()) {
@@ -141,7 +141,6 @@ class ProjectController extends Controller
     {   
         $data = $request->all();
         $project->delete();
-        // $data['routeName'];
         if ($data['routeName'] === 'admin.projects.index') {
             return redirect()->route('admin.projects.index')->with('message', "$project->title has been moved to bin")->with('alert-type', 'warning');
         } else {

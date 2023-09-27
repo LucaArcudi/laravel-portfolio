@@ -45,12 +45,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate($this->validationRules);
-        $data['slug'] = Str::slug($data['name'].'-'.rand());
+        $data['slug'] = Str::slug($data['name']);
         $newCategory = new Category();
         $newCategory->fill($data);
         $newCategory->save();
-
-        return redirect()->route('admin.categories.index');
+        $newCategory->slug = $newCategory->slug."-$newCategory->id";
+        $newCategory->update();
+        return redirect()->route('admin.categories.index')->with('message', "$newCategory->name category has been created")->with('alert-type', 'success');;
     }
 
     /**
