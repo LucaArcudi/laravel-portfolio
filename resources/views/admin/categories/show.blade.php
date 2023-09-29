@@ -34,8 +34,8 @@
                         <a class="btn btn-success" href="{{route('admin.categories.index') }}">Categories</a>
                     </div>
                     <div class="col-4 nav-buttons text-end">
-                        <a href="{{ route('admin.categories.show', $prevCategory) }}" class="btn btn-success">< Previous</a>
-                        <a href="{{ route('admin.categories.show', $nextCategory) }}" class="btn btn-success">Next ></a>
+                        <a href="{{ route('admin.categories.show', $prevCategory ?? $category) }}" class="btn btn-success @if (!$prevCategory) disabled @endif">< Previous</a>
+                        <a href="{{ route('admin.categories.show', $nextCategory ?? $category) }}" class="btn btn-success @if (!$nextCategory) disabled @endif">Next ></a>
                     </div>
                 </div>
 
@@ -44,7 +44,7 @@
                     <thead class="align-middle">
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col" style="width: 55%">Title</th>
+                            <th scope="col">Title</th>
                             <th scope="col">Skills</th>
                             <th scope="col">Visibility</th>
                             <th scope="col" class="d-flex justify-content-between">
@@ -76,11 +76,13 @@
                                 </form>
                             </td>
                             <td class="d-flex justify-content-between">
-                                <form action="{{ route('admin.projects.clear-category', $project, $category->name) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove from {{ $category->name }} category</button>
-                                </form>
+                                @if ($project->category->name != 'No category')    
+                                    <form class="form-deleter" action="{{ route('admin.projects.clear-category', $project) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Remove from {{ $category->name }} category</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                         @empty
@@ -92,7 +94,6 @@
                         @endforelse
                     </tbody>
                 </table>
-                {{-- {{ $categories->links() }} --}}
             </div>
         </div>
     </div>

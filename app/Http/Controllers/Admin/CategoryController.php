@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {   
@@ -51,7 +53,7 @@ class CategoryController extends Controller
         $newCategory->save();
         $newCategory->slug = $newCategory->slug."-$newCategory->id";
         $newCategory->update();
-        return redirect()->route('admin.categories.index')->with('message', "$newCategory->name category has been created")->with('alert-type', 'success');;
+        return redirect()->route('admin.categories.index')->with('message', "$newCategory->name category has been created")->with('alert-type', 'success');
     }
 
     /**
@@ -82,12 +84,16 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $this->validationRules['name'] = ['required', Rule::unique('categories')->ignore($category->id), 'min:3', 'max:25'];
+        $data = $request->validate($this->validationRules);
+        $data['slug'] = Str::slug($data['name']."-$category->id");
+        $category->update($data);
+        return redirect()->route('admin.categories.index')->with('message', "$category->name category has been updated")->with('alert-type', 'success');
     }
 
     /**
@@ -98,7 +104,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        $category->delete(); // set the projects category_id on null (check category_id migration onDelete method)
+        $projectsWithCategoryIdOnNull = Project::where('category_id', null)->get(); // the projects with category_id null
+        $noCategoryCategory = Category::where('name', 'No category')->get(); // the category "No category"
+        foreach($projectsWithCategoryIdOnNull as $project) {
+            $project->category_id = $noCategoryCategory[0]->id; // Iterate through projects with category_id null and assign them to the "No category" category
+            $project->update();
+        }
         return redirect()->route('admin.categories.index')->with('message', "$category->name has been permanently removed")->with('alert-type', 'warning');
     }
 }

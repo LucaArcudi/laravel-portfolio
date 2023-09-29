@@ -26,7 +26,7 @@
                 <div class="row text-center">
                     <div class="col-12 card g-0">
                         <div class="card-header">
-                            <h6 style="color: {{ $project->category->color ?? 'black' }}">{{ $project->category->name ?? 'Without category' }}</h6>
+                            <h6 style="color: {{ $project->category->color }}">{{ $project->category->name }}</h6>
                             <h5 class="card-title">{{ $project->title }}</h5>
                             @foreach ( $project->skills as $skill )
                                 <img style="width: 50px;" src="{{ $skill->image }}" alt="{{ $skill->name }} image">
@@ -43,7 +43,7 @@
                             <p class="card-text">{{ $project->date }}</p>
                         </div>
                         <div class="card-footer d-flex justify-content-between">
-                            <a href="{{ route('admin.projects.show', $prevProject) }}" class="btn btn-success">< Previous</a>
+                            <a href="{{ route('admin.projects.show', $prevProject ?? $project) }}" class="btn btn-success @if (!$prevProject) disabled @endif">< Previous</a>
                             <div class="crud-buttons">
                                 <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>
                                 <form id="{{ $project->title }}" class="form-deleter d-inline" action="{{ route('admin.projects.destroy', $project) }}" method="POST">
@@ -53,7 +53,7 @@
                                     <button class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
-                            <a href="{{ route('admin.projects.show', $nextProject) }}" class="btn btn-success">Next ></a>
+                            <a href="{{ route('admin.projects.show', $nextProject ?? $project) }}" class="btn btn-success @if (!$nextProject) disabled @endif">Next ></a>
                         </div>
                     </div> 
                 </div>

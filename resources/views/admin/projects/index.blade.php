@@ -36,7 +36,7 @@
                         <tr>
                             <th scope="row">{{ $project->id }}</th>
                             <td>{{ $project->title }}</td>
-                            <td>{{ $project->category->name ?? 'Without category' }}</td>
+                            <td>{{ $project->category->name }}</td>
                             <td>
                                 @foreach ( $project->skills as $skill )
                                     <img style="width: 50px;" src="{{ $skill->image }}" alt="{{ $skill->name }} image">

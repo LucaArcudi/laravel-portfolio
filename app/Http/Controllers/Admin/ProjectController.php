@@ -229,8 +229,9 @@ class ProjectController extends Controller
 
     public function clearCategory(Project $project) {
         $categoryName = $project->category->name;
-        $project->category_id = null;
+        $noCategory = Category::where('name', 'No category')->get();
+        $project->category_id = $noCategory[0]->id;
         $project->update();
-        return redirect()->back()->with('message', "$project->title is no longer in $categoryName")->with('alert-type', 'success');
+        return redirect()->back()->with('message', "$project->title is no longer in $categoryName category")->with('alert-type', 'success');
     }
 }

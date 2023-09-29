@@ -11,7 +11,6 @@
     <div class="mb-3">
         <label for="post-category" class="form-label">Category</label>
         <select name="category_id" id="post-category" class="form-control @error('category_id') is-invalid @enderror">
-            <option value="">Without category</option>
             @foreach ($categories as $category)
                 <option value="{{ $category->id }}" @selected(old('category_id', $project->category_id) == $category->id)>{{ $category->name }}</option>
             @endforeach

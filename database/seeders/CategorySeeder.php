@@ -28,7 +28,11 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Full-stack',
                 'color' => '#b25d72'
-            ]
+            ],
+            [
+                'name' => 'No category',
+                'color' => '#000000'
+            ],
         ];
 
         foreach ($categories as $key => $category) {
