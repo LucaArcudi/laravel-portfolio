@@ -19,11 +19,12 @@ class ProjectController extends Controller
             'min:3',
             'max:255',
             'unique:projects',
+            'not_regex:/\b\s{2,}\b/',
         ],
         'description' => ['required', 'min:5', 'max:1000'],
         'image' => ['image', 'required'],
         'is_visible' => ['boolean'],
-        'category_id' => ['exists:categories,id', 'nullable']
+        'category_id' => ['exists:categories,id']
     ];
 
     

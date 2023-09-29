@@ -18,6 +18,10 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
+                'name' => 'No category',
+                'color' => '#000000'
+            ],
+            [
                 'name' => 'Front-end',
                 'color' => '#540099'
             ],
@@ -28,10 +32,6 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'Full-stack',
                 'color' => '#b25d72'
-            ],
-            [
-                'name' => 'No category',
-                'color' => '#000000'
             ],
         ];
 
