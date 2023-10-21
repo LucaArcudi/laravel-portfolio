@@ -45,7 +45,6 @@
                                     <form id="{{ $category->title }}" class="form-deleter" action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="width: 33%;">
                                         @csrf
                                         @method('DELETE')
-                                        <input type="hidden" name="routeName" value="{{ $category->getRouteName() }}">
                                         <button class="btn btn-sm btn-danger w-100" style="width: 100%;">
                                             <i class="fa-solid fa-trash"></i>
                                         </button>

@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {   
 
     protected $validationRules = [
-        'name' => ['required', 'unique:categories', 'min:3', 'max:25'],
+        'name' => ['required', 'unique:categories', 'min:3', 'max:25', 'not_regex:/\b\s{2,}\b/'],
         'color' => ['required', 'max:25'],
     ];
 

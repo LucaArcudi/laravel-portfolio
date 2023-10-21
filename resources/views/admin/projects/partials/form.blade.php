@@ -27,6 +27,19 @@
         @enderror
     </div>
     <div class="mb-3">
+        <div class="d-flex justify-content-around align-items-center">
+            @foreach ($skills as $skill)
+                <div>
+                    <label class="form-check-label">{{ $skill->name }}</label>
+                    <input type="checkbox" class="form-check-input @error('skills') is-invalid @enderror" value="{{ $skill->id }}" name="skills[]">
+                </div>
+            @endforeach
+        </div>
+        @error('skills')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+    <div class="mb-3">
         <label class="form-label">Description</label>
         <textarea class="form-control @error('description') is-invalid @enderror" minlength="5" maxlength="1000" required name="description" rows="5" cols="33">{{ old('description', $project->description) }}</textarea>
         @error('description')

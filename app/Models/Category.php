@@ -16,10 +16,6 @@ class Category extends Model
         return 'slug';
     }
 
-    public function getRouteName() {
-        return Route::currentRouteName();
-    }
-
     public function projects() {
         return $this->hasMany(Project::class);
     }

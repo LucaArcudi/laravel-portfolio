@@ -21,12 +21,13 @@
                     </div>
                     <div class="crud-buttons text-end col-4">
                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-warning">Edit</a>
-                        <form id="{{ $category->name }}" class="form-deleter d-inline" action="{{ route('admin.categories.destroy', $category) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <input type="hidden" name="routeName" value="{{ $category->getRouteName() }}">
-                            <button class="btn btn-danger">Delete</button>
-                        </form>
+                        @if ($category->name != 'No category')
+                            <form id="{{ $category->name }}" class="form-deleter d-inline" action="{{ route('admin.categories.destroy', $category) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
                 <div class="row mb-3 justify-content-between alignk-items-center">

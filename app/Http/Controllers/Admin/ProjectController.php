@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Project;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -14,17 +15,12 @@ class ProjectController extends Controller
 {
 
     public $validationRules = [
-        'title' => [
-            'required',
-            'min:3',
-            'max:255',
-            'unique:projects',
-            'not_regex:/\b\s{2,}\b/',
-        ],
+        'title' => [ 'required', 'min:3', 'max:255', 'unique:projects', 'not_regex:/\b\s{2,}\b/'],
         'description' => ['required', 'min:5', 'max:1000'],
         'image' => ['image', 'required'],
         'is_visible' => ['boolean'],
-        'category_id' => ['exists:categories,id']
+        'category_id' => ['exists:categories,id'],
+        'skills' => ['array', 'exists:skills,id']
     ];
 
     
@@ -53,7 +49,8 @@ class ProjectController extends Controller
     {
         $project = new Project();
         $categories = Category::all();
-        return view('admin.projects.create', compact('project', 'categories'));
+        $skills = Skill::all();
+        return view('admin.projects.create', compact('project', 'categories', 'skills'));
     }
 
     /**
@@ -71,6 +68,7 @@ class ProjectController extends Controller
         $project->fill($data);
         $project->save();
         $project->slug = $project->slug.'-'.$project->id;
+        $project->skills()->sync($data['skills']);
         $project->update();
 
         return redirect()->route('admin.projects.show', $project)->with('message', "Successfully created")->with('alert-type', 'success');
@@ -99,7 +97,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $categories = Category::all();
-        return view('admin.projects.edit', compact('project', 'categories'));
+        $skills = Skill::all();
+        return view('admin.projects.edit', compact('project', 'categories', 'skills'));
     }
 
     /**
