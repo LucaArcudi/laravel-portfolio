@@ -18,7 +18,7 @@
     </div>
     <div class="row">
         <div class="col-10 m-auto">
-            @include('admin.projects.partials.form', ['route' => 'admin.projects.store' , 'project' => $project, 'method' => 'POST', 'buttonName' => 'Create', 'is_required' => 'required'])
+            @include('admin.projects.partials.form', ['route' => 'admin.projects.store' , 'project' => $project, 'method' => 'POST', 'buttonName' => 'Create', 'isRequired' => 'required'])
         </div>
     </div>
 </div>

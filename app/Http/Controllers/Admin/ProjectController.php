@@ -63,7 +63,7 @@ class ProjectController extends Controller
     {   
         $data = $request->validate($this->validationRules);
         $data['slug'] = Str::slug($data['title']);
-        $data['image'] = Storage::put('imgs', $data['image']);
+        $data['image'] = Storage::put('imgs/projects', $data['image']);
         $project = new Project();
         $project->fill($data);
         $project->save();
@@ -110,7 +110,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $this->validationRules['title'] = ['required', 'min:2', 'max:50', Rule::unique('projects')->ignore($project->id)];
+        $this->validationRules['title'] = ['required', 'min:3', 'max:255', 'not_regex:/\b\s{2,}\b/', Rule::unique('projects')->ignore($project->id)];
         $this->validationRules['image'] = ['image'];
         $data = $request->validate($this->validationRules);
         $data['slug'] = Str::slug($data['title'].'-'.$project->id);
@@ -119,12 +119,14 @@ class ProjectController extends Controller
             if (!$project->isImageAValidUrl()) {
                 Storage::delete($project->image);
             }
-            $data['image'] = Storage::put('imgs', $data['image']);
+            $data['image'] = Storage::put('imgs/projects', $data['image']);
         }
 
         if (!array_key_exists('is_visible', $data)) {
             $data['is_visible'] = false;
         }
+
+        $project->skills()->sync($data['skills']);
 
         $project->update($data);
 
@@ -233,5 +235,11 @@ class ProjectController extends Controller
         $project->category_id = $noCategory[0]->id;
         $project->update();
         return redirect()->back()->with('message', "$project->title is no longer in $categoryName category")->with('alert-type', 'success');
+    }
+
+    public function clearSkills(Project $project) {
+        $project->skills()->detach($project->skills);
+        $project->update();
+        return redirect()->back()->with('message', "$project->title has no skills")->with('alert-type', 'success');
     }
 }

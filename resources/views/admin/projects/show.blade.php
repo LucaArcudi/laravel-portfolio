@@ -29,7 +29,11 @@
                             <h6 style="color: {{ $project->category->color }}">{{ $project->category->name }}</h6>
                             <h5 class="card-title">{{ $project->title }}</h5>
                             @foreach ( $project->skills as $skill )
-                                <img style="width: 50px;" src="{{ $skill->image }}" alt="{{ $skill->name }} image">
+                                @if ($skill->isImageAValidUrl())
+                                    <img src="{{ $skill->image }}" alt="{{ $skill->name }} image" style="width: 50px">
+                                @else
+                                    <img src="{{ asset('storage/'.$skill->image) }}" alt="{{ $skill->name }} image" style="width: 50px">
+                                @endif
                             @endforeach
                         </div>
                         <div class="card-body">

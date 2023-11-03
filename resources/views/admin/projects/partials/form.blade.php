@@ -31,7 +31,7 @@
             @foreach ($skills as $skill)
                 <div>
                     <label class="form-check-label">{{ $skill->name }}</label>
-                    <input type="checkbox" class="form-check-input @error('skills') is-invalid @enderror" value="{{ $skill->id }}" name="skills[]">
+                    <input type="checkbox" class="form-check-input @error('skills') is-invalid @enderror" value="{{ $skill->id }}" name="skills[]" @checked($project->skills->contains($skill->id))>
                 </div>
             @endforeach
         </div>
@@ -48,7 +48,7 @@
     </div>
     <div class="mb-3">
         <label class="form-label">Image</label>
-        <input type="file" class="form-control @error('image') is-invalid @enderror" {{ $is_required }} value="{{ old('image', $project->image) }}" name="image">
+        <input type="file" class="form-control @error('image') is-invalid @enderror" {{ $isRequired }} value="{{ old('image', $project->image) }}" name="image">
         @error('image')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror

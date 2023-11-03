@@ -16,6 +16,10 @@ class Skill extends Model
         return 'slug';
     }
 
+    public function isImageAValidUrl(){
+        return filter_var($this->image, FILTER_VALIDATE_URL);
+    }
+
     public function projects() {
         return $this->belongsToMany(Project::class);
     }

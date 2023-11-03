@@ -1,42 +1,66 @@
 @extends('layouts.app')
 
-@section('title', config('app.name').' - Projects')
+@section('title', config('app.name').' - '.$skill->name)
 
 @section('scripts')
     @vite(['resources/js/deleteHandler.js'])
     @vite(['resources/js/popupHandler.js'])
 @endsection
 
-@section('content')
-    <div class="container w-75">
-        <div class="row">
 
+@section('content')
+<div class="container">
+    <div class="row">
             @include('partials.popup')
             <div class="col-12">
+                <div class="row mb-3 justify-content-between align-items-end">
+                    <div class="col-4">
+                        <h1 class="mb-0">
+                            {{ $skill->name }}
+
+                            @if ($skill->isImageAValidUrl())
+                                <img src="{{ $skill->image }}" alt="{{ $skill->name }} image" class="img-fluid w-25">
+                            @else
+                                <img src="{{ asset('storage/'.$skill->image) }}" alt="{{ $skill->name }} image" class="img-fluid w-25">
+                            @endif
+                        </h1>
+                    </div>
+                    <div class="crud-buttons text-end col-4">
+                        <a href="{{ route('admin.skills.edit', $skill) }}" class="btn btn-warning">Edit</a>
+                        <form id="{{ $skill->name }}" class="form-deleter d-inline" action="{{ route('admin.skills.destroy', $skill) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mb-3 justify-content-between alignk-items-center">
+                    <div class="col-4">
+                        <a href="{{ route('admin.skills.index') }}" class="btn btn-primary">Skills</a>
+                    </div>
+                    <div class="col-4 nav-buttons text-end">
+                        <a href="{{ route('admin.skills.show', $prevSkill ?? $skill) }}" class="btn btn-success @if (!$prevSkill) disabled @endif">< Previous</a>
+                        <a href="{{ route('admin.skills.show', $nextSkill ?? $skill) }}" class="btn btn-success @if (!$nextSkill) disabled @endif">Next ></a>
+                    </div>
+                </div>
+
                 <table class="table table-sm table-bordered">
                     <thead class="align-middle">
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Title</th>
-                            <th scope="col">Category</th>
                             <th scope="col">Skills</th>
                             <th scope="col">Visibility</th>
                             <th scope="col" class="d-flex justify-content-between">
-                                <a href="{{ route('admin.projects.create') }}" class="btn btn-sm btn-primary">
-                                    New <i class="fa-solid fa-plus"></i>
-                                </a>
-                                @if ($trash)
-                                    <a href="{{ route('admin.projects.trash') }}" class="btn btn-sm btn-primary">Trash ({{ $trash }})</a>
-                                @endif
+                                
                             </th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        @forelse ($projects as $project)
+                        @forelse ($skill->projects as $project)
                         <tr>
                             <th scope="row">{{ $project->id }}</th>
                             <td>{{ $project->title }}</td>
-                            <td>{{ $project->category->name }}</td>
                             <td>
                                 @foreach ( $project->skills as $skill )
                                     @if ($skill->isImageAValidUrl())
@@ -60,32 +84,22 @@
                                 </form>
                             </td>
                             <td class="d-flex justify-content-between">
-                                <a href="{{ route('admin.projects.show', $project ) }}" class="btn btn-sm btn-info" style="width: 33%;">
-                                    <i class="fa-solid fa-eye"></i>
-                                </a>
-                                <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-sm btn-warning" style="width: 33%;">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                <form id="{{ $project->title }}" class="form-deleter" action="{{ route('admin.projects.destroy', $project) }}" method="POST" style="width: 33%;">
+                                <form class="form-deleter" action="{{ route('admin.projects.clear-skills', $project) }}" method="POST">
                                     @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" name="routeName" value="{{ $project->getRouteName() }}">
-                                    <button class="btn btn-sm btn-danger w-100" style="width: 100%;">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                    @method('PATCH')
+                                    <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Clear all skills</button>
                                 </form>
                             </td>
                         </tr>
                         @empty
                         <tr>
                             <th colspan="5" class="text-start">
-                                No projects to show
+                                There are no projects in {{ $skill->name }} skill
                             </th>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
-                {{ $projects->links() }}
             </div>
         </div>
     </div>

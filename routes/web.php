@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController as DashboardController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
+use App\Http\Controllers\Admin\SkillController as AdminSkillController;
 use App\Http\Controllers\Guest\ProjectController as GuestProjectController;
 
 /*
@@ -22,7 +23,9 @@ Route::get('/', [GuestProjectController::class, 'index']);
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('/skills', AdminSkillController::class);
     Route::resource('/categories', CategoryController::class);
+    Route::patch('/projects/{project}/clear-skills', [AdminProjectController::class, 'clearSkills'])->name('projects.clear-skills');
     Route::patch('/projects/{project}/clear-category', [AdminProjectController::class, 'clearCategory'])->name('projects.clear-category');
     Route::patch('/projects/{project}/visibility-toggle', [AdminProjectController::class, 'visibilityToggle'])->name('projects.visibility-toggle');
     Route::get('/projects/trash', [AdminProjectController::class, 'trash'])->name('projects.trash');
