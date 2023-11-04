@@ -13,19 +13,49 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('/') }}">{{ __('Home') }}</a>
+                        <a 
+                            class="nav-link @if(str_starts_with(Route::currentRouteName(), 'guest')) {{ 'active' }} @endif" 
+                            href="{{ route('guest.projects.index') }}">
+                            
+                            {{ __('Home') }}
+                        
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
+                        <a 
+                            class="nav-link @if(str_starts_with(Route::currentRouteName(), 'admin.dashboard')) {{ 'active' }} @endif" 
+                            href="{{ route('admin.dashboard') }}">
+
+                            {{ __('Dashboard') }}
+
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('admin.projects.index') }}">{{ __('Projects') }}</a>
+                        <a 
+                            class="nav-link @if(str_starts_with(Route::currentRouteName(), 'admin.projects')) {{ 'active' }} @endif" 
+                            href="{{ route('admin.projects.index') }}">
+                        
+                            {{ __('Projects') }}
+                        
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('admin.categories.index') }}">{{ __('Categories') }}</a>
+                        <a 
+                            class="nav-link @if(str_starts_with(Route::currentRouteName(), 'admin.categories')) {{ 'active' }} @endif" 
+                            href="{{ route('admin.categories.index') }}">
+                            
+                            {{ __('Categories') }}
+                        
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('admin.skills.index') }}">{{ __('Skills') }}</a>
+                        <a 
+                            class="nav-link @if(str_starts_with(Route::currentRouteName(), 'admin.skills')) {{ 'active' }} @endif" 
+                            href="{{ route('admin.skills.index') }}">
+                            
+                            {{ __('Skills') }}
+                        
+                        </a>
                     </li>
                 </ul>
 
@@ -43,8 +73,18 @@
                     @endif
                     @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a 
+                            id="navbarDropdown" 
+                            class="nav-link dropdown-toggle @if(str_starts_with(Route::currentRouteName(), 'profile')) {{ 'active' }} @endif" 
+                            href="#" 
+                            role="button" 
+                            data-bs-toggle="dropdown" 
+                            aria-haspopup="true" 
+                            aria-expanded="false" 
+                            v-pre>
+                            
                             {{ Auth::user()->name }}
+                        
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
